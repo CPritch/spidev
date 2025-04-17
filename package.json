@@ -16,12 +16,14 @@
   },
   "scripts": {
     "lint": "eslint .",
+    "build": "tsc index.ts",
     "install": "node dist/install.js",
+    "prepare": "npm run build",
     "docs": "typedoc index.ts"
   },
   "gypfile": true,
   "name": "spi-dev",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "SPI devices communication support for Node.js",
   "main": "dist/index.js",
   "repository": {
