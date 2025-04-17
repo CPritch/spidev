@@ -4,3 +4,4 @@ node_modules
 !/dist/install.js
 /docs
 .DS_Store
+/index.js
