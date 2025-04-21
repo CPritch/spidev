@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "install": "node dist/install.js",
+    "install": "node dist/install.js && node-gyp rebuild --release",
     "prepare": "pnpm run build"
   },
   "gypfile": true,
