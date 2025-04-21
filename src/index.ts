@@ -5,6 +5,10 @@ import { spiDevNode } from './spidev'
 import { encode } from './config/encode'
 import { decode } from './config/decode'
 
+function isError(v: number | [number, number, number]): v is number {
+    return typeof v === 'number' && Number.isInteger(v)
+}
+
 export class SPIDev {
     private readonly fd: number
 
@@ -36,11 +40,11 @@ export class SPIDev {
 
     public getConfiguration(): SPIConfiguration {
         const config = spiDevNode.spi_get_configuration(this.fd)
-        if (Number.isInteger(config)) {
+        if (isError(config)) {
             throw new Error('Error reading SPI configuration: ' + config)
         }
-
-        return decode(config[0], config[1], config[2])
+        const [mode, bitsPerWord, maxSpeedHz] = config
+        return decode(mode, bitsPerWord, maxSpeedHz)
     }
 
     public close() {
