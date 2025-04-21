@@ -1,22 +1,22 @@
-import { GPIOController } from 'gpiod-client'
+// import { GPIOController } from 'gpiod-client'
 import { Pins } from './pins'
-import { GPIOOutputLine } from 'gpiod-client/dist/src/gpio-output-line'
+// import { GPIOOutputLine } from 'gpiod-client/dist/src/gpio-output-line'
 import { SPIDev } from '../../src'
 
 export class SDD1306 {
-    private readonly gpio: GPIOController
+    // private readonly gpio: GPIOController
     private readonly spidev: SPIDev
 
-    private readonly RES: GPIOOutputLine
-    private readonly CS: GPIOOutputLine
-    private readonly DC: GPIOOutputLine
+    // private readonly RES: GPIOOutputLine
+    // private readonly CS: GPIOOutputLine
+    // private readonly DC: GPIOOutputLine
 
     public constructor(chipname: string, path: string, pins: Pins) {
-        this.gpio = new GPIOController(chipname, 'this')
+        // this.gpio = new GPIOController(chipname, 'this')
 
-        this.RES = this.gpio.requestLineAsOutput(pins.RES, 0)
-        this.CS = this.gpio.requestLineAsOutput(pins.CS, 1)
-        this.DC = this.gpio.requestLineAsOutput(pins.DC, 0)
+        // this.RES = this.gpio.requestLineAsOutput(pins.RES, 0)
+        // this.CS = this.gpio.requestLineAsOutput(pins.CS, 1)
+        // this.DC = this.gpio.requestLineAsOutput(pins.DC, 0)
 
         this.spidev = new SPIDev(path, {
             MAX_SPEED_HZ: 1000000,
@@ -26,7 +26,7 @@ export class SDD1306 {
             SPI_MODE: 0
         })
 
-        this.RES.trigger(0, 1000)
+        // this.RES.trigger(0, 1000)
         this.setDisplayOff()
 
         this.setContrastControl(0xcf)
@@ -45,23 +45,23 @@ export class SDD1306 {
     }
 
     public reset(): void {
-        this.RES.trigger(0, 1000)
+        // this.RES.trigger(0, 1000)
     }
 
     public data(data: Uint8Array): void {
-        this.DC.setValue(1)
-        this.CS.setValue(0)
+        // this.DC.setValue(1)
+        // this.CS.setValue(0)
 
         this.spidev.transfer(data.byteLength, data)
-        this.CS.setValue(1)
+        // this.CS.setValue(1)
     }
 
     public cmd(cmd: Uint8Array): void {
-        this.DC.setValue(0)
-        this.CS.setValue(0)
+        // this.DC.setValue(0)
+        // this.CS.setValue(0)
 
         this.spidev.transfer(1, cmd)
-        this.CS.setValue(1)
+        // this.CS.setValue(1)
     }
 
     public setDisplayOff(): void {
@@ -146,6 +146,6 @@ export class SDD1306 {
 
     public release(): void {
         this.spidev.close()
-        this.gpio.close()
+        // this.gpio.close()
     }
 }
